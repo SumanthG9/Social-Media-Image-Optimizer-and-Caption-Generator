@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Image Optimizer API</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: #4361ee;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        code {
+            background-color: #f0f0f0;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        pre {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #4361ee;
+        }
+        
+        .endpoint {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background-color: #10b981;
+            color: white;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .url {
+            font-weight: 600;
+            color: #4361ee;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Social Media Image Optimizer API</h1>
+        <p>Welcome to the Social Media Image Optimizer API. This service provides endpoints to optimize images for various social media platforms and generate platform-specific captions.</p>
+        
+        <h2>Available Endpoints</h2>
+        
+        <div class="endpoint">
+            <p><span class="method">GET</span> <span class="url">/platforms/</span></p>
+            <p>Returns a list of all supported social media platforms and their image dimensions.</p>
+            <h3>Example Response:</h3>
+            <pre><code>{
+  "platforms": {
+    "instagram": {
+      "name": "Instagram",
+      "size": "1080x1080"
+    },
+    "twitter": {
+      "name": "Twitter",
+      "size": "1600x900"
+    },
+    ...
+  }
+}</code></pre>
+        </div>
+        
+        <div class="endpoint">
+            <p><span class="method">POST</span> <span class="url">/process-image/</span></p>
+            <p>Processes an image for a specific social media platform, with options for enhancement and smart cropping.</p>
+            
+            <h3>Parameters:</h3>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>file</td>
+                    <td>File</td>
+                    <td>Yes</td>
+                    <td>The image file to process</td>
+                </tr>
+                <tr>
+                    <td>platform</td>
+                    <td>String</td>
+                    <td>Yes</td>
+                    <td>Target social media platform (e.g., instagram, twitter)</td>
+                </tr>
+                <tr>
+                    <td>format</td>
+                    <td>String</td>
+                    <td>No</td>
+                    <td>Output image format (JPEG or PNG, default: JPEG)</td>
+                </tr>
+                <tr>
+                    <td>smart_crop_enabled</td>
+                    <td>Boolean</td>
+                    <td>No</td>
+                    <td>Whether to use AI-powered smart cropping (default: false)</td>
+                </tr>
+                <tr>
+                    <td>enhance_image_enabled</td>
+                    <td>Boolean</td>
+                    <td>No</td>
+                    <td>Whether to enhance image quality (default: false)</td>
+                </tr>
+                <tr>
+                    <td>confidence</td>
+                    <td>Float</td>
+                    <td>No</td>
+                    <td>Detection confidence threshold for smart cropping (default: 0.3)</td>
+                </tr>
+            </table>
+            
+            <h3>Example Response:</h3>
+            <pre><code>{
+  "message": "Processing complete",
+  "optimized_image": "/output_images/optimized_123e4567-e89b-12d3-a456-426614174000_image.jpg",
+  "caption_text": "A beautiful sunset over the mountains #photooftheday #instagood #instamood",
+  "platform": "instagram",
+  "size": [1080, 1080],
+  "enhanced": true,
+  "smart_cropped": true
+}</code></pre>
+        </div>
+        
+        <h2>Using the API with the React Frontend</h2>
+        <p>This API is designed to work with the provided React frontend. To use the frontend:</p>
+        <ol>
+            <li>Start the API server with <code>uvicorn app:app --reload</code></li>
+            <li>Navigate to the React app directory and run <code>npm start</code></li>
+            <li>Access the frontend at <code>http://localhost:3000</code></li>
+        </ol>
+        
+        <div class="footer">
+            <p>Social Media Image Optimizer API &copy; 2025</p>
+        </div>
+    </div>
+</body>
+</html>

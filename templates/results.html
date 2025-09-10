@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimization Results - Social Media Image Optimizer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+                Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        h1 {
+            color: #4361ee;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .results-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .optimized-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .details {
+            margin: 2rem 0;
+        }
+        
+        .detail-item {
+            margin-bottom: 1rem;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .caption {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .caption-text {
+            font-style: italic;
+            color: #475569;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .action-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .download-button {
+            background-color: #4361ee;
+            color: white;
+        }
+        
+        .download-button:hover {
+            background-color: #3d54e0;
+        }
+        
+        .copy-button {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .copy-button:hover {
+            background-color: #0ea579;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: #f8f9fa;
+            color: #475569;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        .back-button:hover {
+            background-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Optimization Results</h1>
+        </header>
+
+        <div class="results-container">
+            <div class="image-container">
+                <img src="/output_images/{{ filename }}" alt="Optimized Image" class="optimized-image">
+            </div>
+
+            <div class="details">
+                <div class="detail-item">
+                    <span class="detail-label">Platform:</span>
+                    <span>{{ platform }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Dimensions:</span>
+                    <span>{{ size[0] }}x{{ size[1] }}px</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Enhancements:</span>
+                    <span>Smart Cropping: {{ 'Yes' if smart_cropped else 'No' }}, Image Enhancement: {{ 'Yes' if enhanced else 'No' }}</span>
+                </div>
+            </div>
+
+            <div class="caption">
+                <h3>Generated Caption</h3>
+                <p class="caption-text">{{ caption_text }}</p>
+            </div>
+
+            <div class="actions">
+                <button class="action-button download-button" onclick="downloadImage()">
+                    Download Image
+                </button>
+                <button class="action-button copy-button" onclick="copyCaption()">
+                    Copy Caption
+                </button>
+            </div>
+
+            <a href="/" class="back-button">Back to Home</a>
+        </div>
+    </div>
+
+    <script>
+        function downloadImage() {
+            const filename = "{{ filename }}";
+            const link = document.createElement('a');
+            link.href = `/output_images/${filename}`;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function copyCaption() {
+            const caption = "{{ caption_text }}";
+            navigator.clipboard.writeText(caption)
+                .then(() => {
+                    alert('Caption copied to clipboard!');
+                })
+                .catch(err => {
+                    console.error('Failed to copy caption:', err);
+                });
+        }
+    </script>
+</body>
+</html>
